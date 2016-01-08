@@ -159,22 +159,32 @@ class GameScene: SKScene {
     }
     
     func moveSprite(sprite: SKSpriteNode, velocity: CGPoint) {
-        let amountToMove = CGPoint(x: velocity.x * CGFloat(dt), y: velocity.y * CGFloat(dt))
+        //let amountToMove = CGPoint(x: velocity.x * CGFloat(dt), y: velocity.y * CGFloat(dt))
         
     //    print("Amount to move: \(amountToMove)")
         
-        sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
+       // sprite.position = CGPoint(x: sprite.position.x + amountToMove.x, y: sprite.position.y + amountToMove.y)
+        
+        let amountToMove = velocity * CGFloat(dt)
+        
+        sprite.position += amountToMove
         
         
     }
     
     func moveZombieToward(location: CGPoint) {
-        let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y)
+        /*let offset = CGPoint(x: location.x - zombie.position.x, y: location.y - zombie.position.y)
         let length = sqrt(Double(offset.x * offset.x + offset.y * offset.y))
         
         let direction = CGPoint(x: offset.x / CGFloat(length), y: offset.y / CGFloat(length))
         
-        velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)
+        velocity = CGPoint(x: direction.x * zombieMovePointsPerSec, y: direction.y * zombieMovePointsPerSec)*/
         
+        let offset = location - zombie.position
+        let length = offset.length()
+        
+        let direction = offset / length
+        
+        velocity = direction * zombieMovePointsPerSec        
     }
 }
