@@ -147,6 +147,16 @@ class GameScene: SKScene {
         enemy.runAction(SKAction.sequence([actionMove, actionRemove]))
     }
     
+    func startZombieAnimation() {
+        if zombie.actionForKey("animation") == nil {
+            zombie.runAction(SKAction.repeatActionForever(zombieAnimation), withKey: "animation")
+        }
+    }
+    
+    func stopZombieAnimation() {
+        zombie.removeActionForKey("animation")
+    }
+    
     override func didMoveToView(view: SKView) {
         backgroundColor = SKColor.blackColor()
         
@@ -173,7 +183,7 @@ class GameScene: SKScene {
         
         addChild(zombie)
         
-        zombie.runAction(SKAction.repeatActionForever(zombieAnimation))
+      //  zombie.runAction(SKAction.repeatActionForever(zombieAnimation))
         
         debugDrawPlayableArea()
         
@@ -197,6 +207,20 @@ class GameScene: SKScene {
         }
         
         lastUpdateTime = currentTime
+        
+        if let lastTouchLocation = lastTouchLocation {
+            let distance = lastTouchLocation - zombie.position
+            
+            if distance.length() <= (zombieMovePointsPerSec * CGFloat(dt)) {
+                zombie.position = lastTouchLocation
+                velocity = CGPoint.zero
+                stopZombieAnimation()
+            }
+            
+        }
+        
+        
+        
         
         boundsCheckZombie()
         
@@ -239,5 +263,7 @@ class GameScene: SKScene {
         let direction = offset / length
         
         velocity = direction * zombieMovePointsPerSec
+        
+        startZombieAnimation()
     }
 }
