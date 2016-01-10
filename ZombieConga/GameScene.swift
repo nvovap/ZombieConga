@@ -15,7 +15,11 @@ class GameScene: SKScene {
     var dt: NSTimeInterval = 0
     
     let zombieMovePointsPerSec: CGFloat = 480.0
+    let zombieRotateRadiansPerSec: CGFloat  = 4.0 * π
+    
     var velocity: CGPoint = CGPoint.zero
+    var lastTouchLocation: CGPoint?
+    var lastAngle: CGFloat = 0
     
     //playable rectangle 
     let playableRect: CGRect
@@ -60,6 +64,7 @@ class GameScene: SKScene {
         
         let touchLocation = touch.locationInNode(self)
         
+        lastTouchLocation = touchLocation
         sceneTouched(touchLocation)
     }
     
@@ -69,7 +74,7 @@ class GameScene: SKScene {
         }
         
         let touchLocation = touch.locationInNode(self)
-        
+        lastTouchLocation = touchLocation
         sceneTouched(touchLocation)
     }
     
@@ -100,6 +105,46 @@ class GameScene: SKScene {
         }
         
         
+//        if let lastTouchLocation = lastTouchLocation {
+//            let offset = lastTouchLocation - zombie.position
+//            let length = offset.length() - zombieMovePointsPerSec * CGFloat(dt)
+//            
+//            //print(length)
+//            
+//            if length <= 0 {
+//                velocity = CGPoint.zero
+//                zombie.position = lastTouchLocation
+//            }
+//        }
+        
+        
+        
+        
+    }
+    
+    
+    func spawnEnemy() {
+        let enemy = SKSpriteNode(imageNamed: "enemy")
+        enemy.position = CGPoint(x: size.width + enemy.size.width/2 , y: CGFloat.random(min: CGRectGetMinY(playableRect) + enemy.size.height/2, max: CGRectGetMaxY(playableRect) - enemy.size.height/2))
+        addChild(enemy)
+        
+        let actionMidMove = SKAction.moveByX(-size.width/2 - enemy.size.width/2, y: -CGRectGetHeight(playableRect)/2 , duration: 1.0)
+        
+        let actionMove = SKAction.moveByX(-size.width/2 - enemy.size.width/2, y: CGRectGetHeight(playableRect)/2 , duration: 1.0)
+        let wait = SKAction.waitForDuration(0.25)
+        
+        
+        let logMessage = SKAction.runBlock { () -> Void in
+            print("Reached bottom!")
+        }
+        
+        let halfSequence = SKAction.sequence([actionMidMove, logMessage, wait, actionMove])
+        
+        let sequence = SKAction.sequence([halfSequence, halfSequence.reversedAction()])
+        
+        let repeatAction = SKAction.repeatActionForever(sequence)
+        
+        enemy.runAction(repeatAction)
     }
     
     override func didMoveToView(view: SKView) {
@@ -130,7 +175,7 @@ class GameScene: SKScene {
         
         debugDrawPlayableArea()
         
-        
+        spawnEnemy()
         
     }
     
@@ -139,7 +184,7 @@ class GameScene: SKScene {
         //zombie.position = CGPoint(x: zombie.position.x + 8 , y: zombie.position.y)
         //moveSprite(zombie, velocity: CGPoint(x: zombieMovePointsPerSec, y: 0))
         moveSprite(zombie, velocity: velocity)
-        rotateSprite(zombie, direction: velocity)
+        rotateSprite(zombie, direction: velocity, rotateRadiansPerSec: zombieRotateRadiansPerSec)
         
         if lastUpdateTime > 0 {
             dt = currentTime - lastUpdateTime
@@ -154,8 +199,12 @@ class GameScene: SKScene {
       //  print("\(dt * 1000) milliseconds since last update")
     }
     
-    func rotateSprite(sprite: SKSpriteNode, direction: CGPoint) {
-        sprite.zRotation = CGFloat(atan2(direction.y, direction.x))
+    func rotateSprite(sprite: SKSpriteNode, direction: CGPoint, rotateRadiansPerSec: CGFloat) {
+        
+        let shortest = shortestAngleBetween(sprite.zRotation, angle2: velocity.angle)
+        let amountToRotate = min(rotateRadiansPerSec * CGFloat(dt), abs(shortest))
+        sprite.zRotation += shortest.sign() * amountToRotate  
+        
     }
     
     func moveSprite(sprite: SKSpriteNode, velocity: CGPoint) {
@@ -185,6 +234,6 @@ class GameScene: SKScene {
         
         let direction = offset / length
         
-        velocity = direction * zombieMovePointsPerSec        
+        velocity = direction * zombieMovePointsPerSec
     }
 }

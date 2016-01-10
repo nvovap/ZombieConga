@@ -97,5 +97,36 @@ extension CGPoint {
     }
 }
 
+let π = CGFloat(M_PI)
+
+func shortestAngleBetween(angle1: CGFloat, angle2: CGFloat) -> CGFloat {
+    let twoπ = π * 2
+    var angle = (angle2 - angle1) % twoπ
+    
+    if angle >= π {
+        angle -= twoπ
+    }
+    
+    if angle <= -π {
+        angle += twoπ
+    }
+    
+    return angle
+}
+
+extension CGFloat {
+    func sign() -> CGFloat {
+        return self >= 0.0 ? 1.0 : -1.0
+    }
+    
+    static func random() -> CGFloat {
+        return CGFloat(Float(arc4random()) / Float(UInt32.max))
+    }
+    
+    static func random(min min: CGFloat, max: CGFloat) -> CGFloat {
+        assert(min < max)
+        return CGFloat.random() * (max-min) + min
+    }
+}
 
 
