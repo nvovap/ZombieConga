@@ -24,12 +24,24 @@ class GameScene: SKScene {
     //playable rectangle 
     let playableRect: CGRect
     
+    let zombieAnimation: SKAction
+    
     override init(size: CGSize) {
         let maxAspectRatio: CGFloat = 16.0/9.0
         let playableHeight = size.width / maxAspectRatio
         let playableMargin = (size.height - playableHeight) / 2.0
         
         playableRect = CGRect(x: 0, y: playableMargin, width: size.width, height: playableHeight)
+        
+        var textures: [SKTexture] = []
+        
+        for i in 1...4 {
+            textures.append(SKTexture(imageNamed: "zombie\(i)"))
+        }
+        textures.append(textures[2])
+        textures.append(textures[1])
+        
+        zombieAnimation = SKAction.animateWithTextures(textures, timePerFrame: 0.1)
         
         super.init(size: size)
     }
@@ -128,23 +140,11 @@ class GameScene: SKScene {
         enemy.position = CGPoint(x: size.width + enemy.size.width/2 , y: CGFloat.random(min: CGRectGetMinY(playableRect) + enemy.size.height/2, max: CGRectGetMaxY(playableRect) - enemy.size.height/2))
         addChild(enemy)
         
-        let actionMidMove = SKAction.moveByX(-size.width/2 - enemy.size.width/2, y: -CGRectGetHeight(playableRect)/2 , duration: 1.0)
-        
-        let actionMove = SKAction.moveByX(-size.width/2 - enemy.size.width/2, y: CGRectGetHeight(playableRect)/2 , duration: 1.0)
-        let wait = SKAction.waitForDuration(0.25)
+        let actionMove = SKAction.moveToX(-enemy.size.width/2, duration: 2.0)
+        let actionRemove = SKAction.removeFromParent()
         
         
-        let logMessage = SKAction.runBlock { () -> Void in
-            print("Reached bottom!")
-        }
-        
-        let halfSequence = SKAction.sequence([actionMidMove, logMessage, wait, actionMove])
-        
-        let sequence = SKAction.sequence([halfSequence, halfSequence.reversedAction()])
-        
-        let repeatAction = SKAction.repeatActionForever(sequence)
-        
-        enemy.runAction(repeatAction)
+        enemy.runAction(SKAction.sequence([actionMove, actionRemove]))
     }
     
     override func didMoveToView(view: SKView) {
@@ -173,9 +173,13 @@ class GameScene: SKScene {
         
         addChild(zombie)
         
+        zombie.runAction(SKAction.repeatActionForever(zombieAnimation))
+        
         debugDrawPlayableArea()
         
-        spawnEnemy()
+        runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.runBlock({ () -> Void in
+            self.spawnEnemy()
+        }), SKAction.waitForDuration(2.0)])))
         
     }
     
