@@ -134,6 +134,13 @@ class GameScene: SKScene {
         
     }
     
+    func zombieHitCat(cat: SKSpriteNode) {
+        cat.removeFromParent()
+    }
+    
+    func zombieHitEnemy(enemy: SKSpriteNode) {
+        enemy.removeFromParent()
+    }
     
     func spawnEnemy() {
         let enemy = SKSpriteNode(imageNamed: "enemy")
@@ -145,6 +152,48 @@ class GameScene: SKScene {
         
         
         enemy.runAction(SKAction.sequence([actionMove, actionRemove]))
+        
+        enemy.name =  "enemy"
+    }
+    
+    func spawnCat() {
+        let cat = SKSpriteNode(imageNamed: "cat")
+        cat.position = CGPoint(x: CGFloat.random(min: CGRectGetMinX(playableRect), max:  CGRectGetMaxX(playableRect))
+            , y: CGFloat.random(min: CGRectGetMinY(playableRect), max:  CGRectGetMaxY(playableRect)))
+        cat.setScale(0)
+        addChild(cat)
+        
+        
+        //Cats wiggle
+        cat.zRotation = -π / 16.0
+        let leftWiggle = SKAction.rotateByAngle(π/8.0, duration: 0.5)
+        let rightWiggle = leftWiggle.reversedAction()
+        let fullWiggle = SKAction.sequence([leftWiggle, rightWiggle])
+       // let wiggleWait = SKAction.repeatAction(fullWiggle, count: 10)
+        
+        let scaleUp = SKAction.scaleBy(1.2, duration: 0.25)
+        let scaleDown = scaleUp.reversedAction()
+        let fullScale = SKAction.sequence([scaleUp, scaleDown, scaleUp, scaleDown])
+        let group = SKAction.group([fullScale, fullWiggle])
+        let groupWait = SKAction.repeatAction(group, count: 10)
+        
+        //Cats appear
+        let appear = SKAction.scaleTo(1.0, duration: 0.5)
+       // let wait = SKAction.waitForDuration(10.0)
+        let disappear = SKAction.scaleTo(0, duration: 0.5)
+        let removeFromParent = SKAction.removeFromParent()
+        
+        
+        let actions = [appear, groupWait, disappear, removeFromParent]
+        cat.runAction(SKAction.sequence(actions))
+        
+        cat.name = "cat"
+        
+        
+        
+        
+        
+        
     }
     
     func startZombieAnimation() {
@@ -190,6 +239,9 @@ class GameScene: SKScene {
         runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.runBlock({ () -> Void in
             self.spawnEnemy()
         }), SKAction.waitForDuration(2.0)])))
+        
+        runAction(SKAction.repeatActionForever(SKAction.sequence([SKAction.runBlock(spawnCat), SKAction.waitForDuration(1.0)])))
+        
         
     }
     
