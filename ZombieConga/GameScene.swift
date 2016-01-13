@@ -142,6 +142,33 @@ class GameScene: SKScene {
         enemy.removeFromParent()
     }
     
+    func checkCollisions() {
+        var hitCats: [SKSpriteNode] = []
+        
+        enumerateChildNodesWithName("cat") { (node, _) -> Void in
+        let cat = node as! SKSpriteNode
+        if CGRectIntersectsRect(cat.frame, self.zombie.frame) {
+            hitCats.append(cat)
+        }
+        }
+        
+        for cat in hitCats {
+            zombieHitCat(cat)
+        }
+        
+        var hitEnemies: [SKSpriteNode] = []
+        enumerateChildNodesWithName("enemy") { (node, _) -> Void in
+            let enemy = node as! SKSpriteNode
+            if CGRectIntersectsRect(CGRectInset(enemy.frame, 20, 20), self.zombie.frame) {
+                hitEnemies.append(enemy)
+            }
+        }
+        
+        for enemy in hitEnemies {
+            zombieHitEnemy(enemy)
+        }
+    }
+    
     func spawnEnemy() {
         let enemy = SKSpriteNode(imageNamed: "enemy")
         enemy.position = CGPoint(x: size.width + enemy.size.width/2 , y: CGFloat.random(min: CGRectGetMinY(playableRect) + enemy.size.height/2, max: CGRectGetMaxY(playableRect) - enemy.size.height/2))
@@ -276,7 +303,13 @@ class GameScene: SKScene {
         
         boundsCheckZombie()
         
+        
+        
       //  print("\(dt * 1000) milliseconds since last update")
+    }
+    
+    override func didEvaluateActions() {
+        checkCollisions()
     }
     
     func rotateSprite(sprite: SKSpriteNode, direction: CGPoint, rotateRadiansPerSec: CGFloat) {
