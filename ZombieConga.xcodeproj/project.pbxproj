@@ -13,6 +13,11 @@
 		03359CC11C32CC84000D38B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03359CBF1C32CC84000D38B2 /* Main.storyboard */; };
 		03359CC31C32CC84000D38B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03359CC21C32CC84000D38B2 /* Assets.xcassets */; };
 		03359CC61C32CC84000D38B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03359CC41C32CC84000D38B2 /* LaunchScreen.storyboard */; };
+		03546AF41C467B9B00A847B7 /* backgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 03546AEF1C467B9B00A847B7 /* backgroundMusic.mp3 */; };
+		03546AF51C467B9B00A847B7 /* hitCat.wav in Resources */ = {isa = PBXBuildFile; fileRef = 03546AF01C467B9B00A847B7 /* hitCat.wav */; };
+		03546AF61C467B9B00A847B7 /* hitCatLady.wav in Resources */ = {isa = PBXBuildFile; fileRef = 03546AF11C467B9B00A847B7 /* hitCatLady.wav */; };
+		03546AF71C467B9B00A847B7 /* lose.wav in Resources */ = {isa = PBXBuildFile; fileRef = 03546AF21C467B9B00A847B7 /* lose.wav */; };
+		03546AF81C467B9B00A847B7 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = 03546AF31C467B9B00A847B7 /* win.wav */; };
 		0397D8BD1C3BFA5F00AB331F /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D8BC1C3BFA5F00AB331F /* MyUtils.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +30,11 @@
 		03359CC21C32CC84000D38B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03359CC51C32CC84000D38B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		03359CC71C32CC84000D38B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03546AEF1C467B9B00A847B7 /* backgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundMusic.mp3; sourceTree = "<group>"; };
+		03546AF01C467B9B00A847B7 /* hitCat.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitCat.wav; sourceTree = "<group>"; };
+		03546AF11C467B9B00A847B7 /* hitCatLady.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hitCatLady.wav; sourceTree = "<group>"; };
+		03546AF21C467B9B00A847B7 /* lose.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lose.wav; sourceTree = "<group>"; };
+		03546AF31C467B9B00A847B7 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
 		0397D8BC1C3BFA5F00AB331F /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyUtils.swift; path = ../MyUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,8 +76,21 @@
 				03359CC21C32CC84000D38B2 /* Assets.xcassets */,
 				03359CC41C32CC84000D38B2 /* LaunchScreen.storyboard */,
 				03359CC71C32CC84000D38B2 /* Info.plist */,
+				03546AEE1C467B9B00A847B7 /* Sounds */,
 			);
 			path = ZombieConga;
+			sourceTree = "<group>";
+		};
+		03546AEE1C467B9B00A847B7 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				03546AEF1C467B9B00A847B7 /* backgroundMusic.mp3 */,
+				03546AF01C467B9B00A847B7 /* hitCat.wav */,
+				03546AF11C467B9B00A847B7 /* hitCatLady.wav */,
+				03546AF21C467B9B00A847B7 /* lose.wav */,
+				03546AF31C467B9B00A847B7 /* win.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -129,7 +152,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				03359CC61C32CC84000D38B2 /* LaunchScreen.storyboard in Resources */,
+				03546AF81C467B9B00A847B7 /* win.wav in Resources */,
+				03546AF51C467B9B00A847B7 /* hitCat.wav in Resources */,
 				03359CC31C32CC84000D38B2 /* Assets.xcassets in Resources */,
+				03546AF71C467B9B00A847B7 /* lose.wav in Resources */,
+				03546AF61C467B9B00A847B7 /* hitCatLady.wav in Resources */,
+				03546AF41C467B9B00A847B7 /* backgroundMusic.mp3 in Resources */,
 				03359CC11C32CC84000D38B2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
