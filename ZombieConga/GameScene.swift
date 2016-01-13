@@ -11,10 +11,14 @@ import SpriteKit
 class GameScene: SKScene {
     
     var zombie: SKSpriteNode!
+    var invincibleZombie = false
+    
     var lastUpdateTime: NSTimeInterval = 0
     var dt: NSTimeInterval = 0
     
     let zombieMovePointsPerSec: CGFloat = 480.0
+    let catsTrainMovePointsPerSec: CGFloat = 480.0
+    
     let zombieRotateRadiansPerSec: CGFloat  = 4.0 * π
     
     var velocity: CGPoint = CGPoint.zero
@@ -141,13 +145,36 @@ class GameScene: SKScene {
     
     //MARK: -  HIT
     func zombieHitCat(cat: SKSpriteNode) {
-        cat.removeFromParent()
+        //cat.removeFromParent()
+        cat.name = "train"
+        cat.removeAllActions()
+        cat.setScale(1)
+        cat.zRotation = 0
+        
+        cat.runAction(SKAction.colorizeWithColor(UIColor.greenColor(), colorBlendFactor: 100, duration: 2))
+        
         runAction(hitCatSoubd)
     }
     
     func zombieHitEnemy(enemy: SKSpriteNode) {
         enemy.removeFromParent()
         runAction(hitCatLadySound)
+        
+        //Blink action 
+        //let blinkTimes = 10.0
+        let duration = 3.0
+        let blinkAction = SKAction.customActionWithDuration(duration) { (node, elapsedTime) -> Void in
+           // let slice  = duration / blinkTimes
+            let remainder = Double(elapsedTime) % 0.3
+            node.hidden = remainder > 0.15 //slince/2
+        }
+        
+        invincibleZombie = true
+        
+        zombie.runAction(blinkAction) { () -> Void in
+            self.invincibleZombie = false
+            self.zombie.hidden    = false
+        }
     }
     
     func checkCollisions() {
@@ -164,16 +191,18 @@ class GameScene: SKScene {
             zombieHitCat(cat)
         }
         
-        var hitEnemies: [SKSpriteNode] = []
-        enumerateChildNodesWithName("enemy") { (node, _) -> Void in
-            let enemy = node as! SKSpriteNode
-            if CGRectIntersectsRect(CGRectInset(enemy.frame, 20, 20), self.zombie.frame) {
-                hitEnemies.append(enemy)
+        if invincibleZombie != true {
+            var hitEnemies: [SKSpriteNode] = []
+            enumerateChildNodesWithName("enemy") { (node, _) -> Void in
+                let enemy = node as! SKSpriteNode
+                if CGRectIntersectsRect(CGRectInset(enemy.frame, 20, 20), self.zombie.frame) {
+                    hitEnemies.append(enemy)
+                }
             }
-        }
         
-        for enemy in hitEnemies {
-            zombieHitEnemy(enemy)
+            for enemy in hitEnemies {
+                zombieHitEnemy(enemy)
+            }
         }
     }
     
@@ -223,12 +252,6 @@ class GameScene: SKScene {
         cat.runAction(SKAction.sequence(actions))
         
         cat.name = "cat"
-        
-        
-        
-        
-        
-        
     }
     
     func startZombieAnimation() {
@@ -264,6 +287,8 @@ class GameScene: SKScene {
         zombie = SKSpriteNode(imageNamed: "zombie1")
         
         zombie.position = CGPoint(x: 400, y: 400)
+        
+        zombie.zPosition = 100
         
         addChild(zombie)
         
@@ -306,13 +331,7 @@ class GameScene: SKScene {
             
         }
         
-        
-        
-        
         boundsCheckZombie()
-        
-        
-        
       //  print("\(dt * 1000) milliseconds since last update")
     }
     
@@ -340,6 +359,28 @@ class GameScene: SKScene {
         sprite.position += amountToMove
         
         
+    }
+    
+    func maveTrain() {
+        var targetPosition = zombie.position
+        
+        enumerateChildNodesWithName("train"){
+            node, _ in
+            
+            if !node.hasActions() {
+                let actionDuration = 0.3
+                let offset = targetPosition - node.position
+                let direction = offset / offset.length()
+                let amountToMovePerSec = direction * self.catsTrainMovePointsPerSec
+                //let amountToMove =
+                let moveToMove = SKAction.moveToX(12, duration: 1)  //e
+                
+                node.runAction(moveToMove)
+                
+            }
+            
+            targetPosition = node.position
+        }
     }
     
     func moveZombieToward(location: CGPoint) {
