@@ -332,6 +332,8 @@ class GameScene: SKScene {
         }
         
         boundsCheckZombie()
+        
+        moveTrain()
       //  print("\(dt * 1000) milliseconds since last update")
     }
     
@@ -361,7 +363,7 @@ class GameScene: SKScene {
         
     }
     
-    func maveTrain() {
+    func moveTrain() {
         var targetPosition = zombie.position
         
         enumerateChildNodesWithName("train"){
@@ -370,10 +372,11 @@ class GameScene: SKScene {
             if !node.hasActions() {
                 let actionDuration = 0.3
                 let offset = targetPosition - node.position
-                let direction = offset / offset.length()
+                let direction = offset.normalized()
                 let amountToMovePerSec = direction * self.catsTrainMovePointsPerSec
-                //let amountToMove =
-                let moveToMove = SKAction.moveToX(12, duration: 1)  //e
+                let amountToMove = amountToMovePerSec * CGFloat(actionDuration)
+                
+                let moveToMove = SKAction.moveByX(amountToMove.x, y: amountToMove.y, duration: actionDuration)
                 
                 node.runAction(moveToMove)
                 
