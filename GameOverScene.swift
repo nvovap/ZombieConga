@@ -22,6 +22,8 @@ class GameOverScene: SKScene {
     }
     
     override func didMoveToView(view: SKView) {
+
+        
         
         var background: SKSpriteNode
         
@@ -47,7 +49,7 @@ class GameOverScene: SKScene {
         
         let wait = SKAction.waitForDuration(3.0)
         let block = SKAction.runBlock { () -> Void in
-            let myScene = GameScene(size: self.size)
+            let myScene = MainMenuScene(size: self.size)
             
             myScene.scaleMode = self.scaleMode
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)

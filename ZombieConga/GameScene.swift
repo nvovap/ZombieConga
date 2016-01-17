@@ -66,6 +66,9 @@ class GameScene: SKScene {
         
         let background = SKSpriteNode(imageNamed: "background1")
         
+        playBackgroundMusic("backgroundMusic.mp3")
+        
+        
         background.zPosition = -1
         
         addChild(background)
@@ -382,6 +385,8 @@ class GameScene: SKScene {
             gameOver = true
             print("You lose!")
             
+            backgroundMusicPlayer.stop()
+            
             let gameOverScene = GameOverScene(size: size, won: false)
             gameOverScene.scaleMode = scaleMode
             
@@ -451,10 +456,14 @@ class GameScene: SKScene {
             gameOver = true
             print("You win!")
             
+            backgroundMusicPlayer.stop()
+            
             let gameOverScene = GameOverScene(size: size, won: true)
             gameOverScene.scaleMode = scaleMode
             
             let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            
+            
             view?.presentScene(gameOverScene, transition: reveal)
             
         }
