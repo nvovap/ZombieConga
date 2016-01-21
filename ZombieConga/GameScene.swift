@@ -39,6 +39,8 @@ class GameScene: SKScene {
     let hitCatSoubd = SKAction.playSoundFileNamed("hitCat.wav", waitForCompletion: false)
     let hitCatLadySound = SKAction.playSoundFileNamed("hitCatLady.wav", waitForCompletion: false)
     
+    let livesLable = SKLabelNode(fontNamed: "Chalkduster")
+    
     var cameraRect: CGRect {
         return CGRect(x: getCameraPosition().x - size.width/2 + (size.width - playableRect.width)/2,
                       y: getCameraPosition().y - size.height/2 + (size.height - playableRect.height)/2,
@@ -75,6 +77,7 @@ class GameScene: SKScene {
         
         
         playBackgroundMusic("backgroundMusic.mp3")
+        //backgroundMusicPlayer.stop()
         
         //Create background
         for i in 0...1 {
@@ -120,6 +123,19 @@ class GameScene: SKScene {
         camera = cameraNode
         
         setCameraPosition(CGPoint(x: size.width/2, y: size.height/2))
+        
+        
+        livesLable.text = "Lives: X"
+        livesLable.fontColor = SKColor.blackColor()
+        livesLable.fontSize = 100
+        livesLable.zPosition = 100
+        
+        livesLable.horizontalAlignmentMode = .Left
+        livesLable.verticalAlignmentMode = .Bottom
+        
+        livesLable.position = CGPoint(x: -playableRect.size.width/2 + CGFloat(20), y: -playableRect.size.height/2 +  CGFloat(20) + overlapAmount()/2)
+        
+        cameraNode.addChild(livesLable)
         
     }
     
