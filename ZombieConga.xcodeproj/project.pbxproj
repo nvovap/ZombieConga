@@ -20,6 +20,7 @@
 		03546AF81C467B9B00A847B7 /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = 03546AF31C467B9B00A847B7 /* win.wav */; };
 		0397D8BD1C3BFA5F00AB331F /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0397D8BC1C3BFA5F00AB331F /* MyUtils.swift */; };
 		03A042131C49260F002DBDC2 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A042121C49260F002DBDC2 /* GameOverScene.swift */; };
+		E779FFC41C52729D00188E25 /* GLIMSTIC.TTF in Resources */ = {isa = PBXBuildFile; fileRef = E779FFC31C52729D00188E25 /* GLIMSTIC.TTF */; };
 		E7D0EBC71C4BCE1C001134BC /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D0EBC61C4BCE1C001134BC /* MainMenuScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		03546AF31C467B9B00A847B7 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
 		0397D8BC1C3BFA5F00AB331F /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyUtils.swift; path = ../MyUtils.swift; sourceTree = "<group>"; };
 		03A042121C49260F002DBDC2 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOverScene.swift; path = ../GameOverScene.swift; sourceTree = "<group>"; };
+		E779FFC31C52729D00188E25 /* GLIMSTIC.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = GLIMSTIC.TTF; sourceTree = "<group>"; };
 		E7D0EBC61C4BCE1C001134BC /* MainMenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,6 +74,7 @@
 		03359CB61C32CC84000D38B2 /* ZombieConga */ = {
 			isa = PBXGroup;
 			children = (
+				E779FFC31C52729D00188E25 /* GLIMSTIC.TTF */,
 				03A042121C49260F002DBDC2 /* GameOverScene.swift */,
 				E7D0EBC61C4BCE1C001134BC /* MainMenuScene.swift */,
 				0397D8BC1C3BFA5F00AB331F /* MyUtils.swift */,
@@ -157,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E779FFC41C52729D00188E25 /* GLIMSTIC.TTF in Resources */,
 				03359CC61C32CC84000D38B2 /* LaunchScreen.storyboard in Resources */,
 				03546AF81C467B9B00A847B7 /* win.wav in Resources */,
 				03546AF51C467B9B00A847B7 /* hitCat.wav in Resources */,
