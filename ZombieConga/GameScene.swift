@@ -42,6 +42,9 @@ class GameScene: SKScene {
     let livesLable = SKLabelNode(fontNamed: "Glimstick")
     let catsLable  = SKLabelNode(fontNamed: "Glimstick")
     
+    let touchBox = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: 100, height: 100))
+    var priorTouch: CGPoint = CGPoint.zero
+    
     var cameraRect: CGRect {
         return CGRect(x: getCameraPosition().x - size.width/2 + (size.width - playableRect.width)/2,
                       y: getCameraPosition().y - size.height/2 + (size.height - playableRect.height)/2,
@@ -153,6 +156,11 @@ class GameScene: SKScene {
         
         cameraNode.addChild(catsLable)
         
+        touchBox.zPosition = 1000
+        addChild(touchBox)
+        
+        touchBox.hidden = true
+        
     }
     
     
@@ -239,8 +247,17 @@ class GameScene: SKScene {
         
         let touchLocation = touch.locationInNode(self)
         
+        touchBox.position = touchLocation
+        
+        #if os (tvOS)
+            priorTouch = touchLocation
+        #else
+            sceneTouched(touchLocation)
+        #endif
+        
         lastTouchLocation = touchLocation
-        sceneTouched(touchLocation)
+        
+        
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -250,7 +267,19 @@ class GameScene: SKScene {
         
         let touchLocation = touch.locationInNode(self)
         lastTouchLocation = touchLocation
-        sceneTouched(touchLocation)
+        
+        #if os (tvOS)
+            let offset = touchLocation - priorTouch
+            let direction = offset.normalized()
+            velocity = direction * zombieMovePointsPerSec
+            
+            priorTouch = (priorTouch * 0.75) + (touchLocation * 0.25)
+            
+            touchBox.position = zombie.position + (direction*200)
+        #else
+            touchBox.position = touchLocation
+            sceneTouched(touchLocation)
+        #endif
     }
     
     //=========================================
